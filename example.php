@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * To make this example work, you'll need to set up a local server called
+ * wikislurp running on port 8888.
+ */
+
 $url = "http://wikislurp:8888/?secret=YOUR+SECRET&query=armadillo&xpath=/html/body/p[position()%3C=3]&section=0&output=php";
 
 $s = curl_init();
