@@ -1,4 +1,4 @@
-= WikiSlurp
+# WikiSlurp
 
 WikiSlurp is a project designed to allow site developers to easily leverage the awesome power of Wikipiedia's articles.
 
