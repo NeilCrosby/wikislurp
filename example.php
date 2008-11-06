@@ -2,6 +2,12 @@
 	"http://www.w3.org/TR/html4/strict.dtd">
 <?php
 
+/*
+ * To make this example work, you'll need to be running wikislurp on the same
+ * server as you're running this example off, and have them both running out
+ * of the root.
+ */
+
 function removeMagicQuotes (&$postArray, $trim = false) {
 	if (!get_magic_quotes_gpc()) {
 		return;
@@ -18,11 +24,6 @@ function removeMagicQuotes (&$postArray, $trim = false) {
 		}
 	}   
 }
-
-/*
- * To make this example work, you'll need to set up a local server called
- * wikislurp running on port 8888.
- */
 
 removeMagicQuotes($_GET);
 
