@@ -29,33 +29,59 @@
 require_once('config/config.php');
 require_once('classes/MediaWiki.php');
 
-// TODO normalise magicquotes
+function removeMagicQuotes (&$postArray, $trim = false) {
+	if (!get_magic_quotes_gpc()) {
+		return;
+	}
 
+	foreach ($postArray as $key => $val){
+		if (is_array($val)) {
+			removeMagicQuotes ($postArray[$key], $trim);
+		} else {
+			if ($trim == true) {
+				$val = trim($val);
+			}
+			$postArray[$key] = stripslashes($val);
+		}
+	}   
+}
+
+removeMagicQuotes($_GET);
+
+$error = false;
 
 // secret must be set in the config
-
 if ( 0 == strlen($WIKI_SLURP_CONFIG['SECRET']) ) {
-    echo "die - secret not set in config";
-    die;
+    $error = array("error" => "die - secret not set in config");
 }
 
 // Check that required parameters are given
 
-if ( !isset($_GET['secret']) || !$_GET['secret'] ) {
-    echo "die - secret not given in request";
-    die;
+if (!$error && ( !isset($_GET['secret']) || !$_GET['secret'] )) {
+    $error = array("error" => "die - secret not given in request");
 }
 
-if ( !isset($_GET['query']) || !$_GET['query'] ) {
-    echo "die - query not given in request";
-    die;
+if (!$error && ( !isset($_GET['query']) || !$_GET['query'] )) {
+    $error = array("error" => "die - query not given in request");
 }
 
 // check that secret matches config secret
 
-if ( $WIKI_SLURP_CONFIG['SECRET'] != $_GET['secret'] ) {
-    echo "die - secrets didn't match";
-    die;
+if (!$error && ( $WIKI_SLURP_CONFIG['SECRET'] != $_GET['secret'] )) {
+    $error = array("error" => "die - secrets didn't match");
+}
+
+$output = isset($_GET['output']) ? $_GET['output'] : '';
+
+if ($error) {
+	switch ( $output ) {
+	    case 'json':
+	        echo json_encode($error);
+	        break;
+	    default:
+	        echo serialize($error);
+	}
+	die;
 }
 
 $wiki = new MediaWiki($WIKI_SLURP_CONFIG);
