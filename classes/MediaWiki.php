@@ -157,11 +157,27 @@ class MediaWiki {
         $url = 'http://'
              . $this->conf['SEARCH_DOMAIN']
              . $this->conf['SEARCH_API']
-             . urlencode('site:'.$this->conf['WIKI_DOMAIN'].' '.$searchTerm)
-             . '?appid=' . $this->conf['SEARCH_API_KEY'];
+             . urlencode($searchTerm)
+             . '?appid=' . $this->conf['SEARCH_API_KEY']
+			 . '&sites='.urlencode($this->conf['WIKI_DOMAIN']);
         $result = $curl->getFromJsonSource($url, array('cache-ident'=>$method, 'cache-time'=>$this->conf['SEARCH_CACHE_TIME']));
 
-        if ( $data = $this->getDataFromArray($result, array('ysearchresponse', 'resultset_web', 0)) ) {
+        if ( $aData = $this->getDataFromArray($result, array('ysearchresponse', 'resultset_web')) ) {
+			$bestDataPoint = 0;
+			$bestCount = 0;
+			for ( $i=0; $i < sizeof($aData); $i++ ) {
+				$nTitle    = preg_match_all('/<b>/', $aData[$i]['title'], $matches);
+				$nAbstract = preg_match_all('/<b>/', $aData[$i]['abstract'], $matches);
+				$count = 10 * $nTitle + $nAbstract;
+				
+				if ( $count > $bestCount ) {
+					$bestDataPoint = $i;
+					$bestCount = $count;
+				}
+			}
+			
+			$data = $aData[$bestDataPoint];
+			
             $url = $data['url'];
             $lastSlashPos = strrpos($url, $this->conf['WIKI_BASE_DIR']);
             $wikiQuery = substr($url, $lastSlashPos + strlen($this->conf['WIKI_BASE_DIR']));
@@ -238,7 +254,7 @@ class MediaWiki {
     }
     
     private function reduceHtml($html, $options) {
-        $xPathQuery = (isset($options['xpath'])) ? $options['xpath']: '/html/body/*';
+        $xPathQuery = (isset($options['xpath']) && $options['xpath']) ? $options['xpath']: '/html/body/*';
         
         $doc = new DOMDocument();
         // have to give charset otherwise loadHTML gets confused
