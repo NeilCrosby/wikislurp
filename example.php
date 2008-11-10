@@ -54,7 +54,7 @@ curl_setopt($s,CURLOPT_HEADER,false);
 curl_setopt($s,
     CURLOPT_RETURNTRANSFER,1);
 // wait 1 second, then abort
-curl_setopt($s,CURLOPT_TIMEOUT,1);
+//curl_setopt($s,CURLOPT_TIMEOUT,1);
 $result = curl_exec($s);
 curl_close( $s );
 
