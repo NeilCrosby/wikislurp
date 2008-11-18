@@ -19,6 +19,7 @@
  * @return An array containing the following keys: 'url', 'title', 'html'.
  *                  
  * TODO: Return proper error codes.
+ * TODO: Return an error if we can't get data from one of the external sources
  *
  * @author  Neil Crosby <neil@neilcrosby.com>
  * @license Creative Commons Attribution-Share Alike 3.0 Unported 
