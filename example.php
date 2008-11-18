@@ -39,26 +39,21 @@ $cookedContext = htmlentities($context);
 $cookedXpath   = htmlentities($xpath);
 $cookedSection = htmlentities($section);
 
-$cookedUrlSecret  = urlencode($secret);
-$cookedUrlQuery   = urlencode($query);
-$cookedUrlContext = urlencode($context);
-$cookedUrlXpath   = urlencode($xpath);
-$cookedUrlSection = urlencode($section);
+require_once('client/WikiSlurpClient.php');
 
-// /html/body/p[position()%3C=3]
-$url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/?secret=$cookedUrlSecret&query=$cookedUrlQuery&context=$cookedUrlContext&xpath=$cookedUrlXpath&section=$cookedUrlSection&output=php";
+$client = new WikiSlurpClient();
+$result = $client->getData(
+	"http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/",
+	$secret,
+	$query,
+	array(
+		'context' => $context,
+		'xpath'	  => $xpath,
+		'section' => $section,
+		'timeout' => 1
+	)
+);
 
-$s = curl_init();
-curl_setopt($s,CURLOPT_URL, $url);
-curl_setopt($s,CURLOPT_HEADER,false);
-curl_setopt($s,
-    CURLOPT_RETURNTRANSFER,1);
-// wait 1 second, then abort
-//curl_setopt($s,CURLOPT_TIMEOUT,1);
-$result = curl_exec($s);
-curl_close( $s );
-
-$result = unserialize($result);
 ?>
 <html lang="en">
 	<head>
@@ -91,7 +86,6 @@ $result = unserialize($result);
 				<input type="submit" value="Submit">
 			</p>
 		</form>
-		<p><?php echo $url; ?></p>
 		<pre><?php echo htmlentities(print_r($result, true)); ?></pre>
 	</body>
 </html>
