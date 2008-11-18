@@ -1,8 +1,10 @@
 <?php
 
 /**
- * @author Neil Crosby <neil@thetenwordreview.com>
- * @licence Creative Commons Attribution-Share Alike 3.0 Unported 
+ * A little library for making curl calls a little easier.
+ * 
+ * @author  Neil Crosby <neil@neilcrosby.com>
+ * @license Creative Commons Attribution-Share Alike 3.0 Unported 
  *          http://creativecommons.org/licenses/by-sa/3.0/
  **/
 class CurlCall {

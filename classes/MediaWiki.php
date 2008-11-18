@@ -9,8 +9,8 @@ require_once('CurlCall.php');
  *
  * TODO: Solve "The Cuckoo Problem".
  *
- * @author Neil Crosby
- * @licence Creative Commons Attribution-Share Alike 3.0 Unported 
+ * @author  Neil Crosby <neil@neilcrosby.com>
+ * @license Creative Commons Attribution-Share Alike 3.0 Unported 
  *          http://creativecommons.org/licenses/by-sa/3.0/
  **/
 class MediaWiki {
