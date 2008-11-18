@@ -31,8 +31,15 @@ class WikiSlurpClient {
 	 *                  be given here.  The keys of the array become the
 	 *                  option names, the values are their values.
 	 * 					Obvious, huh?
+	 *					The exception to this is the addition of an extra
+	 *					'timeout' option, which takes an integer.  If given
+	 * 					the WikiSlurp Server request will timeout after that
+	 *					number of seconds and an array containing error
+	 *					information will be returned.
 	 *
 	 * @return An array containing the following keys: 'url', 'title', 'html'.
+	 *		   If an error occurs then an array containing the key 'error'
+	 *         will be returned.
 	 **/
 	public function getData() {
 		
