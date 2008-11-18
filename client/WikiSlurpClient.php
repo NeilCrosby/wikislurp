@@ -41,7 +41,50 @@ class WikiSlurpClient {
 	 *		   If an error occurs then an array containing the key 'error'
 	 *         will be returned.
 	 **/
-	public function getData() {
+	public function getData($url=null, $secret=null, $query=null, $options=null) {
+		if (!$url) {
+			return array('error'=>'No URL given');
+		}
+		
+		if (!$secret) {
+			return array('error'=>'No secret given');
+		}
+		
+		if (!$query) {
+			return array('error'=>'No query given');
+		}
+		
+		$options['secret'] = $secret;
+		$options['query']  = $query;
+		$options['output'] = 'php';
+		
+		$queryOptions = array();
+		foreach ( $options as $key=>$value) {
+			array_push($queryOptions, $key.'='.urlencode($value));
+		}
+		
+		$queryString = implode('&', $queryOptions);
+		
+		$url .= '?' . $queryString;
+
+		$s = curl_init();
+		curl_setopt($s,CURLOPT_URL, $url);
+		curl_setopt($s,CURLOPT_HEADER,false);
+		curl_setopt($s,CURLOPT_RETURNTRANSFER,1);
+		
+		if ( isset($options['timeout']) && is_numeric($options['timeout']) && $options['timeout'] > 0 ) {
+			curl_setopt($s,CURLOPT_TIMEOUT,intval($options['timeout']));
+		}
+
+		$result = curl_exec($s);
+		curl_close( $s );
+		
+		if ( !$result ) {
+			return array('error'=>'Query timed out');
+		}
+
+		$result = unserialize($result);
+		return $result;
 		
 	}
 	
