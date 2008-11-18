@@ -18,11 +18,10 @@
  *
  * @return An array containing the following keys: 'url', 'title', 'html'.
  *                  
- * TODO: Normalise magicquotes.
  * TODO: Return proper error codes.
  *
- * @author Neil Crosby <neil@thetenwordreview.com>
- * @licence Creative Commons Attribution-Share Alike 3.0 Unported 
+ * @author  Neil Crosby <neil@neilcrosby.com>
+ * @license Creative Commons Attribution-Share Alike 3.0 Unported 
  *          http://creativecommons.org/licenses/by-sa/3.0/
  **/
  
