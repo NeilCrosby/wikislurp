@@ -42,12 +42,18 @@ class MediaWiki {
      **/
     public function getArticle( $options = array() ) {
         
-        $html = $this->getArticleAsHtml( $options );
-        $html = $this->reduceHtml($html, $options);
+        $title = $this->getArticleTitle( $options );
+        $url   = $this->getArticleUrl( $options );
+        $html  = $this->getArticleAsHtml( $options );
+        $html  = $this->reduceHtml($html, $options);
+        
+        if ( !$title || !$url || !$html ) {
+            return array('error'=>"Something went wrong slurping the data.  I bet you want to know why, don't you? For now, soz, but that's all the info you're getting.");
+        }
         
         return array(
-            'title' => $this->getArticleTitle( $options ),
-            'url'   => $this->getArticleUrl( $options ),
+            'title' => $title,
+            'url'   => $url,
             'html'  => $html,
         );
     }
