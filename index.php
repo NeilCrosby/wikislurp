@@ -70,25 +70,16 @@ if (!$error && ( $WIKI_SLURP_CONFIG['SECRET'] != $_GET['secret'] )) {
     $error = array("error" => "die - secrets didn't match");
 }
 
-$output = isset($_GET['output']) ? $_GET['output'] : '';
-
-if ($error) {
-	switch ( $output ) {
-	    case 'json':
-	        echo json_encode($error);
-	        break;
-	    default:
-	        echo serialize($error);
-	}
-	die;
+if ( $error ) {
+    $obj = $error;
+} else {
+    $wiki = new MediaWiki($WIKI_SLURP_CONFIG);
+    $obj = $wiki->getArticle( $_GET );
 }
 
-$wiki = new MediaWiki($WIKI_SLURP_CONFIG);
-$obj = $wiki->getArticle( $_GET );
-
-
 //header("Content-type: text/text");
-switch ( $_GET['output'] ) {
+$output = isset($_GET['output']) ? $_GET['output'] : '';
+switch ( $output ) {
     case 'json':
         echo json_encode($obj);
         break;
