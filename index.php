@@ -51,23 +51,35 @@ $error = false;
 
 // secret must be set in the config
 if ( 0 == strlen($WIKI_SLURP_CONFIG['SECRET']) ) {
-    $error = array("error" => "die - secret not set in config");
+    $error = array(
+        "error"  => "Forbidden - Secret not set in config",
+        "status" => 403,
+    );
 }
 
 // Check that required parameters are given
 
 if (!$error && ( !isset($_GET['secret']) || !$_GET['secret'] )) {
-    $error = array("error" => "die - secret not given in request");
+    $error = array(
+        "error" => "Bad request - Secret not given",
+        "status" => 400,
+    );
 }
 
 if (!$error && ( !isset($_GET['query']) || !$_GET['query'] )) {
-    $error = array("error" => "die - query not given in request");
+    $error = array(
+        "error" => "Bad request - Query not given",
+        "status" => 400,
+    );
 }
 
 // check that secret matches config secret
 
 if (!$error && ( $WIKI_SLURP_CONFIG['SECRET'] != $_GET['secret'] )) {
-    $error = array("error" => "die - secrets didn't match");
+    $error = array(
+        "error" => "Unauthorised - Secret is not valid",
+        "status" => 401,
+    );
 }
 
 if ( $error ) {
@@ -77,12 +89,18 @@ if ( $error ) {
     $obj = $wiki->getArticle( $_GET );
 }
 
-//header("Content-type: text/text");
+if ( isset($obj['status']) && 200 != $obj['status'] ) {
+    header("HTTP/1.0 {$obj['status']} {$obj['error']}");
+}
+
 $output = isset($_GET['output']) ? $_GET['output'] : '';
 switch ( $output ) {
     case 'json':
+        header("Content-type: application/json");
         echo json_encode($obj);
         break;
     default:
+        // is this a suitable mimetype?
+        header("Content-type: text/x-php");
         echo serialize($obj);
 }
