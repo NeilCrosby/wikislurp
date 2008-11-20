@@ -48,7 +48,10 @@ class MediaWiki {
         $html  = $this->reduceHtml($html, $options);
         
         if ( !$title || !$url || !$html ) {
-            return array('error'=>"Something went wrong slurping the data.  I bet you want to know why, don't you? For now, soz, but that's all the info you're getting.");
+            return array(
+                'error'=>"Something went wrong slurping the data.  I bet you want to know why, don't you? For now, soz, but that's all the info you're getting.",
+                'status'=>400, // A generic 400 for now since we're not entirely sure what went wrong
+            );
         }
         
         return array(
