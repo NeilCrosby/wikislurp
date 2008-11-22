@@ -274,7 +274,6 @@ class MediaWiki {
         );
         
         $xpath = new DOMXPath($doc);
-        $tempChildren = $xpath->query($xPathQuery);
         
         // remove "crap" if we need to
         if ( !isset($options['retaincrap']) ) {
@@ -302,6 +301,7 @@ class MediaWiki {
 
         // got to make a temporary body before we remove the current one
         $tempBody = $doc->createElement('body');
+        $tempChildren = $xpath->query($xPathQuery);
         foreach ( $tempChildren as $child ) {
             $tempBody->appendChild($child);
         }
