@@ -40,3 +40,9 @@ RewriteRule ^client(/.*)?$ - [F,L]
 RewriteRule ^config(/.*)?$ - [F,L]
 RewriteRule ^README.Markdown$ - [F,L]
 RewriteRule ^LICENSE$ - [F,L]
+
+###################################################
+# Comment this line out if you want to be able to 
+# try out the example.php script on a test server
+###################################################
+RewriteRule ^example.php$ - [F,L]
