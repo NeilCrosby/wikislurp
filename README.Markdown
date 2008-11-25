@@ -8,6 +8,16 @@ WikiSlurp is very much alpha software at present.  I'm using it on [Is Neil Anno
 
 Point releases are available for download from [The Code Train][3], and the current development code is always available from the [GitHub Repository][4].
 
+## Setup and Use
+
+You'll need to set up a couple of keys to be able to get WikiSlurp to work.  Both keys are set in the `config/config.php` file.
+
+The first is the `SECRET` key.  This is what you use as your secret in the URL to call WikiSlurp.  You can make this whatever you like, but you must set it otherwise WikiSlurp will bail out with an error.
+
+The second key that needs to be set is the `SEARCH_API_KEY`.  This is a Yahoo! BOSS API key, that you can get by signing up to Yahoo! BOSS (free, pretty easy to do).  BOSS is used to find the Wikipedia articles that we slurp.
+
+WikiSlurp comes with an `example.php` file that you can use to test the system and make sure that things are happening in the way you expect.  In order to use the `example.php` file, you'll need to uncomment the line in the `.htaccess` file that forbids its use on production systems.
+
 [1]: http://isneilannoyedby.com
 [2]: http://thetenwordreview.com
 [3]: http://thecodetrain.co.uk/code/wikislurp/
