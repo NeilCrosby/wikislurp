@@ -57,11 +57,12 @@ $result = $client->getData(
 ?>
 <html lang="en">
 	<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>WikiSlurp Tester</title>
 	</head>
 	<body>
 		<h1>WikiSlurp Tester</h1>
-		<form method="get">
+		<form method="get" action="example.php">
 			<p>
 				<label for="secret">Secret</label>
 				<input type="text" name="secret" id="secret" value="<?php echo $cookedSecret; ?>">
