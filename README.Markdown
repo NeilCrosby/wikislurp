@@ -10,7 +10,7 @@ Point releases are available for download from [The Code Train][3], and the curr
 
 ## Setup and Use
 
-You'll need to set up a couple of keys to be able to get WikiSlurp to work.  Both keys are set in the `config/config.php` file.
+You'll need to set up a couple of keys to be able to get WikiSlurp to work.  Both keys are set in the `config/config.php` file, which you can create from the `config/config.php.example` file.
 
 The first is the `SECRET` key.  This is what you use as your secret in the URL to call WikiSlurp.  You can make this whatever you like, but you must set it otherwise WikiSlurp will bail out with an error.
 
