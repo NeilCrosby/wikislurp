@@ -15,6 +15,8 @@ require_once('CurlCall.php');
  **/
 class MediaWiki {
     
+    private $lastErrors = null;
+    
     public function __construct( $conf = null ) {
 		$this->conf = array();
 		if ( $conf ) {
@@ -42,14 +44,18 @@ class MediaWiki {
      **/
     public function getArticle( $options = array() ) {
         
+        $this->lastErrors = array();
+        
         $title = $this->getArticleTitle( $options );
         $url   = $this->getArticleUrl( $options );
         $html  = $this->getArticleAsHtml( $options );
         $html  = $this->reduceHtml($html, $options);
         
         if ( !$title || !$url || !$html ) {
+            $errors = (isset($this->lastErrors)) ? $this->lastErrors : "Something went wrong slurping the data.  I bet you want to know why, don't you? For now, soz, but that's all the info you're getting.";
+
             return array(
-                'error'=>"Something went wrong slurping the data.  I bet you want to know why, don't you? For now, soz, but that's all the info you're getting.",
+                'error'=>$errors,
                 'status'=>400, // A generic 400 for now since we're not entirely sure what went wrong
             );
         }
@@ -63,6 +69,7 @@ class MediaWiki {
     
 	public function getArticleTitle( $options = array() ) {
         if ( !isset($options['query']) || !$options['query'] ) {
+            array_push($this->lastErrors, "No query was given");
             return;
         }
         $context=(isset($options['context'])) ? ' '.$options['context'] : '';
@@ -88,11 +95,13 @@ class MediaWiki {
             return $page['title'];
         }
 
+        array_push($this->lastErrors, "We couldn't find an article title");
         return null;
     }
 
 	public function getArticleUrl( $options = array() ) {
         if ( !isset($options['query']) || !$options['query'] ) {
+            array_push($this->lastErrors, "No query was given");
             return;
         }
         $context=(isset($options['context'])) ? ' '.$options['context'] : '';
@@ -118,11 +127,13 @@ class MediaWiki {
             return 'http://'.$this->conf['WIKI_DOMAIN'].$this->conf['WIKI_BASE_DIR'].$page['title'];
         }
 
+        array_push($this->lastErrors, "We couldn't find an article URL");
         return null;
     }
 
 	public function getArticleAsHtml( $options = array() ) {
         if ( !isset($options['query']) || !$options['query'] ) {
+            array_push($this->lastErrors, "No query was given");
             return;
         }
         $context=(isset($options['context'])) ? ' '.$options['context'] : '';
@@ -157,6 +168,7 @@ class MediaWiki {
      **/
     private function getWikiTitleFromBoss($searchTerm) {
         if ( !$this->conf['SEARCH_API_KEY'] ) {
+            array_push($this->lastErrors, "No SEARCH_API_KEY was set");
             return false;
         }
         
