@@ -32,12 +32,14 @@ $query   = isset($_GET['query'])   ? $_GET['query']   : '';
 $context = isset($_GET['context']) ? $_GET['context'] : '';
 $xpath 	 = isset($_GET['xpath'])   ? $_GET['xpath']   : '';
 $section = isset($_GET['section']) ? $_GET['section'] : '';
+$timeout = isset($_GET['timeout']) ? $_GET['timeout'] : '';
 
 $cookedSecret  = htmlentities($secret);
 $cookedQuery   = htmlentities($query);
 $cookedContext = htmlentities($context);
 $cookedXpath   = htmlentities($xpath);
 $cookedSection = htmlentities($section);
+$cookedTimeout = htmlentities($timeout);
 
 require_once('client/WikiSlurpClient.php');
 
@@ -50,7 +52,7 @@ $result = $client->getData(
 		'context' => $context,
 		'xpath'	  => $xpath,
 		'section' => $section,
-		'timeout' => 1
+		'timeout' => $timeout
 	)
 );
 
@@ -82,6 +84,10 @@ $result = $client->getData(
 			<p>
 				<label for="section">Section</label>
 				<input type="text" name="section" id="section" value="<?php echo $cookedSection; ?>">
+			</p>
+			<p>
+				<label for="timeout">Timeout</label>
+				<input type="text" name="timeout" id="timeout" value="<?php echo $cookedTimeout; ?>">
 			</p>
 			<p>
 				<input type="submit" value="Submit">
