@@ -3,6 +3,7 @@
 $WIKI_SLURP_CONFIG = array(
     'SECRET' => '', // YOU NEED TO CHANGE THIS TO SOMETHING SECRET
     'SEARCH_API_KEY' => '', // YOU NEED TO CHANGE THIS - GET ONE FROM http://developer.yahoo.com/search/boss/
+    'CACHE_LOCATION' => null, // IF YOU DON'T CHANGE THIS, THE DEFAULT LOCATION WILL BE USED
     
     'WIKI_DOMAIN' => 'en.wikipedia.org',
     'WIKI_API' => '/w/api.php',
@@ -13,3 +14,8 @@ $WIKI_SLURP_CONFIG = array(
     'SEARCH_API' => '/ysearch/web/v1/',
     'SEARCH_CACHE_TIME' => 60 * 60 * 24 * 7, // SEVEN DAYS
 );
+
+if ( !defined('CACHE_PATH') && $WIKI_HTML_CACHE_TIME['CACHE_PATH'] ) {
+  define('CACHE_PATH', $WIKI_HTML_CACHE_TIME['CACHE_PATH']);
+}
+
