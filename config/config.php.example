@@ -15,7 +15,7 @@ $WIKI_SLURP_CONFIG = array(
     'SEARCH_CACHE_TIME' => 60 * 60 * 24 * 7, // SEVEN DAYS
 );
 
-if ( !defined('CACHE_PATH') && $WIKI_HTML_CACHE_TIME['CACHE_PATH'] ) {
-  define('CACHE_PATH', $WIKI_HTML_CACHE_TIME['CACHE_PATH']);
+if ( !defined('CACHE_PATH') && $WIKI_SLURP_CONFIG['CACHE_PATH'] ) {
+  define('CACHE_PATH', $WIKI_SLURP_CONFIG['CACHE_PATH']);
 }
 
