@@ -1,7 +1,6 @@
 <?php
 
-require_once('PhpCache.php');
-require_once('CurlCall.php');
+require_once('externals/CurlCall/CurlCall.php');
 
 /**
  * Queries Wikipedia to retrieve html data from the best article page
