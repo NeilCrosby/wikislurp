@@ -1,6 +1,6 @@
 <?php
 
-require_once('externals/CurlCall/CurlCall.php');
+require_once('externals/curlcall/CurlCall.php');
 
 /**
  * Queries Wikipedia to retrieve html data from the best article page
