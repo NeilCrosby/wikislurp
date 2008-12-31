@@ -18,6 +18,18 @@ The second key that needs to be set is the `SEARCH_API_KEY`.  This is a Yahoo! B
 
 WikiSlurp comes with an `example.php` file that you can use to test the system and make sure that things are happening in the way you expect.  In order to use the `example.php` file, you'll need to uncomment the line in the `.htaccess` file that forbids its use on production systems.
 
+### Git Submodules
+
+After you have clone the repository, you'll need to run the following to
+pull in all the submodules:
+
+    git submodule init
+    git submodule update
+    cd externals/curlcall
+    git submodule init
+    git submodule update
+    
+
 [1]: http://isneilannoyedby.com
 [2]: http://thetenwordreview.com
 [3]: http://thecodetrain.co.uk/code/wikislurp/
