@@ -88,7 +88,13 @@ if ( $error ) {
 }
 
 if ( isset($obj['status']) && 200 != $obj['status'] ) {
-    header("HTTP/1.0 {$obj['status']} {$obj['error']}");
+    $error = $obj['error'];
+    if (is_array($error)) {
+        $error = implode($error, ', ');
+    }
+    $error = str_replace("\n", '', $error);
+    
+    header("HTTP/1.0 {$obj['status']} {$error}");
 }
 
 $output = isset($_GET['output']) ? $_GET['output'] : '';
@@ -99,6 +105,6 @@ switch ( $output ) {
         break;
     default:
         // is this a suitable mimetype?
-        header("Content-type: text/x-php");
+        //header("Content-type: text/x-php");
         echo serialize($obj);
 }

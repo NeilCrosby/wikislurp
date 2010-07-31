@@ -143,7 +143,7 @@ class MediaWiki {
         $wikiUrlTitle = urlencode($searchText);
         $wikiText = null;
 
-        $wikiText = $this->getWikiText($wikiUrlTitle);
+        $wikiText = $this->getWikiText($wikiUrlTitle, $section);
 
         // first, if wikipedia gives us nothing then search using Yahoo! BOSS for a wiki page
         if ( !$wikiText) {
@@ -180,7 +180,14 @@ class MediaWiki {
              . urlencode($searchTerm)
              . '?appid=' . $this->conf['SEARCH_API_KEY']
 			 . '&sites='.urlencode($this->conf['WIKI_DOMAIN']);
-        $result = $curl->getFromJsonSource($url, array('cache-ident'=>$method, 'cache-time'=>$this->conf['SEARCH_CACHE_TIME']));
+        $result = $curl->getFromJsonSource(
+            $url, 
+            array(
+                'cache-ident'=>$method, 
+                'cache-time'=>$this->conf['SEARCH_CACHE_TIME'],
+                'user-agent'=>'WikiSlurp (http://github.com/NeilCrosby/wikislurp)',
+            )
+        );
 
         if ( $aData = $this->getDataFromArray($result, array('ysearchresponse', 'resultset_web')) ) {
 			$bestDataPoint = 0;
@@ -219,7 +226,14 @@ class MediaWiki {
              . '?format=php&action=query&rvprop=content&prop=revisions&redirects=1'
              . $urlSection
              . '&titles='.$wikiUrlTitle;
-        $result = $curl->getFromPhpSource($url, array('cache-ident'=>$method, 'cache-time'=>$this->conf['WIKI_CACHE_TIME']));
+        $result = $curl->getFromPhpSource(
+            $url, 
+            array(
+                'cache-ident'=>$method, 
+                'cache-time'=>$this->conf['WIKI_CACHE_TIME'],
+                'user-agent'=>'WikiSlurp (http://github.com/NeilCrosby/wikislurp)',
+            )
+        );
 
         $page = false;
 
@@ -240,7 +254,14 @@ class MediaWiki {
              . '?format=php&action=query&rvprop=content&prop=revisions&redirects=1'
              . $urlSection
              . '&titles='.$wikiUrlTitle;
-        $result = $curl->getFromPhpSource($url, array('cache-ident'=>$method, 'cache-time'=>$this->conf['WIKI_CACHE_TIME']));
+        $result = $curl->getFromPhpSource(
+            $url, 
+            array(
+                'cache-ident'=>$method, 
+                'cache-time'=>$this->conf['WIKI_CACHE_TIME'],
+                'user-agent'=>'WikiSlurp (http://github.com/NeilCrosby/wikislurp)',
+            )
+        );
 
         $wikiText = false;
 
@@ -260,12 +281,13 @@ class MediaWiki {
         $result = $curl->getFromPhpSourceAsPost(
             $url, 
             array(
-                'post-fields'=>"format=php&action=parse&text=".urlencode($wikiText),
+                'post-fields'=>array("format"=>'php','action'=>'parse','text'=>$wikiText),
                 'cache-ident'=>$method,
-                'cache-time'=>$this->conf['WIKI_HTML_CACHE_TIME']
+                'cache-time'=>$this->conf['WIKI_HTML_CACHE_TIME'],
+                'user-agent'=>'WikiSlurp (http://github.com/NeilCrosby/wikislurp)',
             )
         );
-
+        
         if ( $wikiText = $this->getDataFromArray($result, array('parse','text','*')) ) {
             return $wikiText;
         }
